@@ -140,5 +140,17 @@ end
 
 /-
 INTRODUCTION and ELIMINATION RULES
+
+introduction: function, returns thing
+elim: takes proof as argument, returns other thing
+
+for ∀ x, P x
+intro: assume arbitrary x, then show p x
+elim:
+
+for P → Q
+intro: assume arbitrary P, then show in that context, you can prove Q
+"if p is true then q is true"
+elim:
 -/
 
