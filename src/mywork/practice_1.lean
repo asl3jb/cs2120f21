@@ -71,11 +71,10 @@ Suppose you have a proof, let's call it pf, of the proposition,
 (∀ x, P x), and you need a proof of P t, for some particular t.
 Write an expression then uses the elimination rule for ∀ to get
 such a proof. Complete the answer by replacing the underscores
-in the following expression: ( _ _ ). 
+in the following expression: ( pf t ). 
 -/
-theorem pf 
-
-
+  
+  
 /-
 IMPLIES: →
 
@@ -97,6 +96,8 @@ Hint: put parenthesis around "n + 1" in your answer.
 -/
 
 def successor_of_even_is_odd : Prop := 
+  ∀ (n : N),
+  ev n → odd (n + 1)
   _
 
 /- #7
@@ -107,9 +108,9 @@ proposition, "if it's raining out then the streets are wet")
 by filling in the hole
 -/
 
-axioms (raining streets_wet : Prop)
+axioms (if_raining streets_wet : Prop)
 
-axiom if_raining_then_streets_wet : _
+axiom if_raining_then_streets_wet : if_raining → streets_wet
   
 
 /- #9
@@ -122,7 +123,7 @@ you are asked to use the elimination rule for →.
 
 axiom pf_raining : raining
 
-example : streets_wet :=
+example : streets_wet := if_raining_then_streets_wet pf_raining
  _
 
 /- 
@@ -164,12 +165,16 @@ allows you to give a name to a new value in the middle of a
 proof script.
 -/
 
-theorem and_associative : 
-  ∀ (P Q R : Prop),
-  (P ∧ (Q ∧ R)) → ((P ∧ Q) ∧ R) :=
+theorem and_associative :
+∀ (P Q R : Prop), (P ∧ Q) ∧ R → P ∧ (Q ∧ R) :=
 begin
-  intros P Q R h,
-  have p : P := and.elim_left h,
+  assume P Q R,
+  assume h,
+  have pq : P ∧ Q := and.elim_left h,
+  have p : P := and.elim_left pq,
+  have q : Q := and.elim_right pq,
+  have r : R := and.elim_right h,
+  exact and.intro p (and.intro q r),
 end
 
 /- #11
@@ -183,10 +188,10 @@ proof, let's call it p_qr, of (P ∧ (Q ∧ R)) [by
 application of ∧ and → introduction.] What now
 remains to be proved is ((P ∧ Q) ∧ R). We can
 construct a proof of this proposition by applying
-_____ to a proof of (P ∧ Q) and a proof of R.
+[the and associative rule] to a proof of (P ∧ Q) and a proof of R.
 What remains, then, is to obtain these proofs.
 But this is easily done by the application of
-____ to ____. QED. 
+[left elimination rule] to [P ∧ Q]. QED. 
 -/
 
 
