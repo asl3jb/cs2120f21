@@ -191,7 +191,7 @@ construct a proof of this proposition by applying
 [the and associative rule] to a proof of (P ∧ Q) and a proof of R.
 What remains, then, is to obtain these proofs.
 But this is easily done by the application of
-[left elimination rule] to [P ∧ Q]. QED. 
+[and elimination rule] to p_qr. QED. 
 -/
 
 
