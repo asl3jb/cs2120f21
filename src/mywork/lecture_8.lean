@@ -8,6 +8,7 @@ begin
   have q : Q := and.elim_right pq,
   have r : R := and.elim_right h,
   exact and.intro p (and.intro q r),
+  --first and second goals accomplished
 end
 
 /-

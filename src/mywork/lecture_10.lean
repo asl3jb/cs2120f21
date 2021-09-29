@@ -104,8 +104,11 @@ end
 theorem no_constradiction : ∀ (P : Prop), ¬ (P ∧ ¬P) :=
 begin
 assume P,
-assume p,
-cases p,
+assume h,
+have p := h.left,
+have np := h.right,
+have f := np p, --*when you have a contradiction, we can get a proof of false*
+exact f,
 end
 
 /-
@@ -207,6 +210,7 @@ theorem excluded_middle' : ∀ (P : Prop), (P ∨ ¬P) :=
 begin
   assume P,
   -- we don't have a proof of either P or of ¬P!
+  
 end
 
 /-
