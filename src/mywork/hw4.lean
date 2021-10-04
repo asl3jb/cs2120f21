@@ -1,3 +1,5 @@
+axiom excluded_middle : ∀ (P : Prop), (P ∨ ¬P)
+
 -- 1
 example : 0 ≠ 1 :=
 begin
@@ -62,7 +64,11 @@ theorem demorgan_1 : ∀ (P Q : Prop), ¬ (P ∧ Q) ↔ ¬ P ∨ ¬ Q :=
 begin
   assume P Q,
   apply iff.intro _ _,
-   assume npornq,
+  assume nporq,
+  have pornq := classical.em P,
+  have qornq := classical.em Q,
+  cases pornq with p np,
+  apply or.intro_left,
   
 end
 
@@ -72,7 +78,8 @@ theorem demorgan_2 : ∀ (P Q : Prop), ¬ (P ∨ Q) → ¬P ∧ ¬Q :=
 begin
   assume P Q h,
   apply and.intro,
-
+  have pornq := classical.em P,
+  have qornq := classical.em Q,
 end
 
 
@@ -116,7 +123,7 @@ begin
 assume P Q R,
 apply iff.intro _ _,
 assume h1,
-apply or.intro_
+
 end
 
 -- remember or is right associative
@@ -140,10 +147,12 @@ end
 Formally state and prove the proposition that
 not every natural number is equal to zero.
 -/
-lemma not_all_nats_are_zero : exists (n : ℕ), ¬n = 0 :=
+lemma not_all_nats_are_zero : exists (n : ℕ), ¬0 = 1 :=
 begin
 intros,
 apply exists.intro (0),
+assume h,
+cases h,
 end 
 
 
@@ -154,7 +163,8 @@ begin
   assume P Q,
   apply iff.intro _ _,
   assume pq,
-  apply or.intro_right,
+  apply or.intro_left,
+  
 end
 
 -- 12
@@ -164,6 +174,7 @@ begin
   assume pimpq,
   assume nq,
   assume p,
+
 end
 
 -- 13

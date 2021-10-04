@@ -33,8 +33,10 @@ all propositions in Lean).
 
 def prop_1 : Prop :=
   ∀ (T : Type)
-  (w z : T),
-  w = z →
+  (x y z w : T),
+  x = y →
+  y = z → 
+  w = z → 
   z = w
   
 
@@ -48,8 +50,10 @@ again, called eq.refl, eq.subst, eq.symm, eq.trans.
 theorem prop_1_proof : prop_1 := 
 begin
   unfold prop_1,
-  assume T w z e,
-  rw e,
+  assume T x y z w,
+  assume xy yz wz,
+  exact eq.symm wz,
+  --or rw wz
 end
 
 /-
@@ -63,7 +67,7 @@ what do you do? (I'm being a little informal in leaving out the
 type of X.) 
 
 ANSWER: Given an orbitrary object of Type T, we can assume all
-those objects are of type T.
+those objects are of type T. (Becquse it was arbitrary, P must be true of any T)
 -/
 
 /- #5
@@ -72,6 +76,7 @@ Suppose you have a proof, let's call it pf, of the proposition,
 Write an expression then uses the elimination rule for ∀ to get
 such a proof. Complete the answer by replacing the underscores
 in the following expression: ( pf t ). 
+(Universal instantiation)
 -/
   
   
