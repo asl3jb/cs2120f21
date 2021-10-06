@@ -69,7 +69,7 @@ begin
   have qornq := classical.em Q,
   cases pornq with p np,
   apply or.intro_left,
-  
+  have pandu : P ∧ Q := 
 end
 
 
@@ -80,6 +80,7 @@ begin
   apply and.intro,
   have pornq := classical.em P,
   have qornq := classical.em Q,
+  
 end
 
 
@@ -108,8 +109,11 @@ begin
   apply or.intro_left,
   exact pornp,
   --third goal part 1 accomplished
-  apply or.intro_left,
-  apply false.elim,
+  apply or.intro_right,
+  apply and.intro,
+  exact pornp,
+  have qornq := classical.em Q,
+  --apply false.elim,
   --still need to show that not p is false
   
 end
@@ -174,7 +178,8 @@ begin
   assume pimpq,
   assume nq,
   assume p,
-
+  have q : Q := pimpq p,
+  contradiction,
 end
 
 -- 13
