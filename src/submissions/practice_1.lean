@@ -79,6 +79,7 @@ in the following expression: ( pf t ).
 (Universal instantiation)
 -/
   
+
   
 /-
 IMPLIES: →

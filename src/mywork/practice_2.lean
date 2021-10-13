@@ -1,7 +1,7 @@
 /-
 Allison Lai asl3jb
   HOMEWORK 3
-  
+
 Prove the following simple logical conjectures.
 Give a formal and an English proof of each one.
 Your English language proofs should be complete
@@ -204,6 +204,8 @@ Next, we assume P as p. What remains is P. We already have a proof of this, so u
 For the backwards goal, we need to solve P ∨ Q.
 Since wealready have a proof of P, we can use thhe or intro rule on
 the left side and then prove P using exact. QED. -/
+
+
 example : ∀ (P Q : Prop), P ∧ (P ∨ Q) ↔ P := 
 begin
   assume P Q,
