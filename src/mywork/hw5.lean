@@ -47,12 +47,30 @@ What does this propositon say? Explain it in
 plain English. Here's a start: "If there's a 
 function that maps/takes every α value that ... 
 -- your completed English rendition here:
+  that relatest to β, then for all a of type α 
+  when p is applied to a it implies q.
+  Likewise, it also states that p is related to α
+  and q is related to β 
+
 -/
 
 
 -- Give your formal proof here
 begin
-  _
+  assume h k,
+  cases h with c d,
+  cases k with e f,
+  apply exists.intro _ _,
+  have beta : β := c e,
+  exact beta,
+  apply d,
+  exact f,
 end
   
 
+/- 
+To start, we have two assumptions: one for the general function f
+and another for a and b
+We then do case analysis on each assumption where we find that
+alhpa relates to beta and that alpha is proven,
+-/
