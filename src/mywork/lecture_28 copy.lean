@@ -1,6 +1,13 @@
 namespace hidden
 
 /-
+Proof by induction: it will suffice to have these
+two smaller machines. 0, and a machine that takes n' 
+and returns n' + 1.
+The second machine takes both of those arguments 
+
+
+
 So far in this class, we've worked with just
 a few types of data, mostly natural numbers,
 though we've also seen that we have a Boolean
@@ -653,13 +660,13 @@ begin
 assume n,
 -- construct function by induction/recursion
 -- have to give partial answers for two cases
-apply nat.rec_on n,
+induction n,
 -- answer for base case, n = 0
 exact 0,
 -- show if we have answer for n' we can derive answer one for n'+1
-assume n',              -- suppose n' is arbitrary
-assume result_for_n',   -- assume result for n' (ind. hypothesis)
-exact result_for_n' + (n' + 1),   -- answer for n' + 1
+--assume n',              -- suppose n' is arbitrary
+--assume result_for_n',   -- assume result for n' (ind. hypothesis)
+exact n_ih + (n_n+1),   -- answer for n' + 1
 end
 
 
@@ -676,7 +683,16 @@ EXERCISE: Define the factorial function by recursion
 
 def factorial : nat → nat :=
 begin
+  assume n,
+  induction n with n' n'_fac,
+  exact nat.zero.succ,
+  exact n'_fac * (n'.succ), --or n'+1
 end
+#eval factorial 5
+
+def fac : ℕ → ℕ 
+| (nat.zero) := 1
+| (nat.succ n') := fac n'
 
 /-
 Lean provides a nice notation for writing proofs

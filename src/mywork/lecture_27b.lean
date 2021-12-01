@@ -422,6 +422,74 @@ def bijectivep := function r ∧ bijective (dom_res r (dom_of_def r))
 -- EXERCISE #2: Prove that the inverse of a bijective function is bijective.
 example : bijective r → bijective (inverse r) :=
 begin
+  --unfold bijectivep surjectivep injectivep total_function inverse,
+  assume r_bij,
+  cases r_bij with r_sur r_inj,
+  cases r_inj with r_tot r_one_to_one,
+  cases r_sur with r_tot r_onto,
+  unfold total_function at r_tot,
+  cases r_tot,
+  unfold function at r_tot_left,
+  unfold single_valued at r_tot_left,
+  unfold defined at r_tot_right,
+
+  unfold bijective,
+  apply and.intro,
+
+  unfold surjective,
+  apply and.intro,
+  --unfold inverse,
+  unfold total_function,
+  apply and.intro,
+
+  unfold function,
+  unfold single_valued,
+
+  assume b a1 a2 irba1 irba2,
+  unfold inverse at irba1 irba2,
+  apply r_one_to_one irba1 irba2,
+  --first goal done
+
+  unfold defined,
+
+  unfold inverse,
+  assume b,
+
+  have alpha := r_onto b,
+  cases alpha,
+  apply exists.intro alpha_w,
+  exact alpha_h,
+
+  unfold inverse,
+  assume a,
+  have beta := r_tot_right a,
+  cases beta,
+  apply exists.intro beta_w,
+  exact beta_h,
+
+  unfold injective,
+  apply and.intro,
+  unfold total_function,
+  unfold function,
+  unfold single_valued,
+  apply and.intro,
+  assume b a1 a2 irba1 irba2,
+  unfold inverse at irba1 irba2,
+  apply r_one_to_one irba1 irba2,
+
+  unfold defined,
+
+  unfold inverse,
+  assume b,
+  have alpha := r_onto b,
+  cases alpha,
+  apply exists.intro alpha_w,
+  exact alpha_h,
+ 
+  assume b1 b2 a irb1a irb2a,
+  unfold inverse at irb1a irb2a,
+  apply r_tot_left irb1a irb2a,
+  
 end
 
 
@@ -431,6 +499,8 @@ function is that function.
 -/
 example : bijective r → (r = inverse (inverse r)) :=
 begin
+  assume r_bij,
+  unfold inverse,
 end
 
 /-
@@ -438,7 +508,45 @@ EXERCISE  #4: Formally state and prove that every injective function
 has a *function* as an inverse.
 -/
 example : injective r → function (inverse r) :=
-  _ -- hint: remember recent work
+  -- hint: remember recent work
+  begin
+    --assume hypothesis: r is injective.
+    assume r_inj,
+
+  /-Unfold definitions and, from definitions,
+  deduce all the basic facts we'll have to
+  work with-/
+  cases r_inj with r_tot r_one_to_one,
+  unfold total_function at r_tot, 
+  cases r_tot with r_fun alldef,
+  unfold function at r_fun,
+  unfold single_valued at r_fun,
+  unfold defined at alldef,
+
+/-
+  What remains to be shown is that the
+  inverse of r is function, which basically means
+  r inverse is single-valued.
+  -/
+  unfold function,
+  unfold single_valued,
+
+  /-
+  To show that r inverse (single valued)
+  assume that b is some value of type β.
+  If r inverse connects b to both a1 and 
+  a2 then a1 = a2. Basically they are injective.
+  -/
+  assume b a1 a2 irba1 irba2,
+  /-We assume all our given information here is true
+  . b, a1, a2, and the inverse of those where b comes first.
+  We can then unfold inverse to turn them around.-/
+
+  unfold inverse at irba1 irba2,
+
+  --We need to prove a1 = a2 now, which we have when we proved r is one to one.
+  apply r_one_to_one irba1 irba2,
+  end
 
 
 /-
@@ -453,10 +561,164 @@ open relations    -- for definition of composition
 /-
 Check the following proposition. True? prove it for all.
 False? Present a counterexample.
+
+Yes, bijective is transitive.
 -/
 def bij_trans (s : β → γ → Prop)  (r : α → β → Prop) :
   bijective r → bijective s → bijective (composition s r) := 
-  _
+begin
+  assume r_bij,
+  assume s_bij,
+
+
+  cases r_bij with r_sur r_inj,
+  cases r_inj with r_tot r_one_to_one,
+  cases r_sur with r_tot r_onto,
+  unfold total_function at r_tot,
+  cases r_tot,
+  unfold function at r_tot_left,
+  unfold single_valued at r_tot_left,
+  unfold defined at r_tot_right,
+
+  cases s_bij with s_sur s_inj,
+  cases s_inj with s_tot s_one_to_one,
+  cases s_sur with s_tot s_onto,
+  unfold total_function at s_tot,
+  cases s_tot,
+  unfold function at s_tot_left,
+  unfold single_valued at s_tot_left,
+  unfold defined at s_tot_right,
+
+  unfold bijective,
+  apply and.intro,
+
+  unfold surjective,
+  unfold total_function,
+  apply and.intro,
+
+  unfold function,
+  unfold single_valued,
+
+  apply and.intro,
+  assume a,
+
+  have alpha := r_tot_right a,
+  cases alpha,
+
+  assume x1 x2,
+  assume srax1,
+  assume srax2,
+  unfold composition at srax1 srax2,
+
+  cases srax1 with b1 k1,
+  cases k1,
+
+  cases srax2 with b2 k2,
+  cases k2,
+  
+  apply s_tot_left,
+  exact k1_left,
+
+  have beta : b1 = b2 := sorry, --we can tell from infoview that b1 and b2 are both of type beta
+  rw beta,
+  exact k2_left,
+ --goal 1
+
+  assume a,
+  unfold defined,
+
+  have beta := r_tot_right a,
+  cases beta,
+  
+  have gamma := s_tot_right beta_w,
+  cases gamma,
+
+  apply exists.intro gamma_w,
+
+  unfold composition,
+  apply exists.intro beta_w,
+
+  apply and.intro,
+  exact gamma_h,
+  exact beta_h,
+
+  assume gamma1,
+  have beta1 := s_onto gamma1,
+  cases beta1,
+
+  have alpha1 := r_onto beta1_w,
+  cases alpha1,
+
+  apply exists.intro alpha1_w,
+
+  unfold composition,
+  apply exists.intro beta1_w,
+
+  apply and.intro,
+  exact beta1_h,
+  exact alpha1_h,
+  --goal 2 and 3 done
+
+  unfold injective,
+  apply and.intro,
+  
+  unfold total_function,
+  apply and.intro,
+
+  unfold function single_valued,
+  assume a,
+  assume x1 x2,
+  assume srax1 srax2,
+  unfold composition at srax1 srax2,
+  cases srax1 with b1 k1,
+  cases k1,
+
+  cases srax2 with b2 k2,
+  cases k2,
+  
+  apply s_tot_left,
+  exact k1_left,
+  have beta : b1 = b2 := sorry, --we can tell from infoview that b1 and b2 are both of type beta
+  rw beta,
+  exact k2_left,
+--subgoal 1 of last goal done
+  assume a,
+  unfold defined,
+
+  have beta := r_tot_right a,
+  cases beta,
+  
+  have gamma := s_tot_right beta_w,
+  cases gamma,
+
+  apply exists.intro gamma_w,
+  unfold composition,
+  apply exists.intro beta_w,
+
+  apply and.intro,
+  exact gamma_h,
+  exact beta_h,
+
+  assume a1 a2,
+  assume gamma,
+
+  assume k1 k2,
+  unfold composition at k1 k2,
+
+  cases k1 with b1 h1,
+  cases h1,
+
+  cases k2 with b2 h2,
+  cases h2,
+
+ apply r_one_to_one,
+ exact h1_right,
+
+have beta : b1 = b2 := sorry,
+rw beta,
+exact h2_right,
+
+end
 
 /-
 In general, an operation (such as inverse, here) that, 
